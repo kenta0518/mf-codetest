@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: /app/wait-for-it.sh db:3306 --timeout=30 --strict -- go run /app/cmd/app/main.go
+    ports:
+      - 8888:8888
+    volumes:
+      - ./:/app
+    depends_on:
+      - db
+  db:
+    image: mysql:8.0
+    platform: linux/amd64
+    volumes:
+      - ./tmp/db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: codetest
+      MYSQL_USER: root
+      MYSQL_PASSWORD: pass
+    ports:
+      - 3306:3306

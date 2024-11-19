@@ -1,0 +1,7 @@
+mysql:
+  db_conn: "root:pass@tcp(db:3306)/codetest?parseTime=True&loc=Asia%2FTokyo"
+settings:
+  environment: "Development"
+cookie:
+  key: "session_id"
+  host: "localhost"
