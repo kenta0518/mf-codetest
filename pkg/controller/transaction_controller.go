@@ -40,17 +40,27 @@ func (c *TransactionController) CreateTransaction(ctx *gin.Context) {
 		return
 	}
 
-	// CreateTransaction メソッドに引数を渡す
 	transaction, err := c.transactionUsecase.CreateTransaction(ctx, req.UserID, req.Amount, req.Description)
 	if err != nil {
-		cf := &i18n.LocalizeConfig{MessageID: model.E0201}
-		apperr := model.NewErrPaymentRequired(model.E0201, c.localizer.MustLocalize(cf))
-		ctx.JSON(apperr.StatusCode, gin.H{"error": apperr})
+		if appErr, ok := err.(*model.AppError); ok {
+			// ErrorCode が "E0201" の場合、402 Payment Required を返す
+			if appErr.ErrorCode == "E0201" {
+				cf := &i18n.LocalizeConfig{MessageID: model.E0201}
+				apperr := model.NewErrPaymentRequired(model.E0201, c.localizer.MustLocalize(cf))
+
+				// 402 Payment Required エラーを返す
+				ctx.JSON(http.StatusPaymentRequired, gin.H{"error": apperr})
+				return
+			}
+		}
+
+		// その他のエラーは 500（InternalServerError）として返す
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	// 正常時のレスポンスを返す
-	ctx.JSON(http.StatusOK, transaction)
+	// 201 Created で取引情報を返す
+	ctx.JSON(http.StatusCreated, transaction)
 }
 
 type Transaction struct {
