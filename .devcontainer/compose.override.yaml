@@ -1,20 +1,7 @@
 version: '3.8'
 services:
-  db:
-    image: mysql:8
-    environment:
-      MYSQL_ROOT_PASSWORD: example
-      MYSQL_DATABASE: codetest
-    networks:
-      - mynetwork
-  web:
-    build: .
+  app:
     command: sleep infinity
-    depends_on:
-      - db
-    networks:
-      - mynetwork
-
-networks:
-  mynetwork:
-    driver: bridge
+    build:
+      context: .
+      dockerfile: .devcontainer/override.Dockerfile

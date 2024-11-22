@@ -1,7 +1,7 @@
 {
 	"name": "go-server",
 	"dockerComposeFile": [ "../compose.yaml", "compose.override.yaml" ],
-	"service": "web",
+	"service": "app",
 	"workspaceFolder": "/app",
 	"customizations": {
 		"vscode": {

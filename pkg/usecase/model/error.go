@@ -23,8 +23,12 @@ func NewErrUnauthorized(code string, msg string) *AppError {
 	return &AppError{StatusCode: 401, ErrorCode: code, ErrorMessage: msg}
 }
 
+func NewErrPaymentRequired(code string, msg string) *AppError {
+	return &AppError{StatusCode: 402, ErrorCode: code, ErrorMessage: msg}
+}
+
 func NewErrForbidden(code string, msg string) *AppError {
-	return &AppError{StatusCode: 404, ErrorCode: code, ErrorMessage: msg}
+	return &AppError{StatusCode: 403, ErrorCode: code, ErrorMessage: msg}
 }
 
 func NewErrNotFound(code string, msg string) *AppError {

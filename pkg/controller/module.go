@@ -4,6 +4,9 @@ import "go.uber.org/fx"
 
 func Modules() fx.Option {
 	return fx.Module("controller",
-		fx.Provide(),
+		fx.Provide(
+			NewUserController,
+			NewTransactionController,
+		),
 	)
 }

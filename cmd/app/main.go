@@ -8,7 +8,6 @@ import (
 	"github.com/kenta0518/mf-codetest/config"
 	"github.com/kenta0518/mf-codetest/pkg/controller"
 	"github.com/kenta0518/mf-codetest/pkg/controller/route"
-	"github.com/kenta0518/mf-codetest/pkg/controller/web/info"
 	"github.com/kenta0518/mf-codetest/pkg/domain/entity"
 	"github.com/kenta0518/mf-codetest/pkg/domain/service"
 	"github.com/kenta0518/mf-codetest/pkg/infra"
@@ -23,12 +22,9 @@ import (
 	"github.com/gin-contrib/secure"
 )
 
-//	@title						STARS API
+//	@title						MFテスト API
 //	@version					1.0
-//	@description				STARS APIドキュメント
-//	@securityDefinitions.apikey	Bearer
-//	@in							header
-//	@name						Authorization
+//	@description				MFテストのテストAPI
 
 func main() {
 	cfg, err := config.NewConfig()
@@ -49,7 +45,6 @@ func main() {
 		service.Modules(),
 		usecase.Modules(),
 		controller.Modules(),
-		info.Modules(),
 		fx.Invoke(
 			lifecycle,
 			route.Route,

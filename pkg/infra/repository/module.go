@@ -8,6 +8,8 @@ func Modules() fx.Option {
 	return fx.Module("repository",
 		fx.Provide(
 			NewTransaction,
+			NewUser,
+			NewDbTransaction,
 		),
 	)
 }

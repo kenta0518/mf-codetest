@@ -31,9 +31,9 @@ func TestCreate(t *testing.T) {
 		t.Fatal(err)
 	}
 	// クリーンアップ
-	if _, err := conn.Exec("delete from transactions"); err != nil {
-		t.Fatal(err)
-	}
+	//if _, err := conn.Exec("delete from transactions"); err != nil {
+	//	t.Fatal(err)
+	//}
 
 	// 並列で取引登録リクエストをPOSTする
 	var wg sync.WaitGroup
