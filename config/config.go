@@ -6,23 +6,13 @@ import (
 
 type (
 	Config struct {
-		MySQL    `yaml:"mysql"`
-		Settings `yaml:"settings"`
+		MySQL `yaml:"mysql"`
 	}
 
 	MySQL struct {
 		DBConn string `env-required:"true" yaml:"db_conn" env:"DB_CONN"`
 	}
-
-	Settings struct {
-		Environment    string `yaml:"environment" env:"SETTING_ENVIRONMENT"`
-		ResourceServer string `yaml:"resource_server" env:"SETTING_RESOURCE_SERVER"`
-	}
 )
-
-func (s Settings) IsDevelopment() bool {
-	return s.Environment == "Development"
-}
 
 func NewConfig() (*Config, error) {
 	cfg := &Config{}

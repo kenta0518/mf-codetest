@@ -23,7 +23,4 @@ func Route(
 
 	route.POST("/api/users", user.CreateUser)
 	route.POST("/transactions", transaction.CreateTransaction)
-	//route.POST("/api/sessions", cs.CreateSession)
-	//route.GET("/api/resourceversion", resource.GetResourceVersion)
-
 }

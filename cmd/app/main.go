@@ -9,7 +9,6 @@ import (
 	"github.com/kenta0518/mf-codetest/pkg/controller"
 	"github.com/kenta0518/mf-codetest/pkg/controller/route"
 	"github.com/kenta0518/mf-codetest/pkg/domain/entity"
-	"github.com/kenta0518/mf-codetest/pkg/domain/service"
 	"github.com/kenta0518/mf-codetest/pkg/infra"
 	"github.com/kenta0518/mf-codetest/pkg/infra/repository"
 	"github.com/kenta0518/mf-codetest/pkg/usecase"
@@ -42,7 +41,6 @@ func main() {
 	app := fx.New(
 		fx.Supply(cfg, localizer, mysql.DB, handler),
 		repository.Modules(),
-		service.Modules(),
 		usecase.Modules(),
 		controller.Modules(),
 		fx.Invoke(
@@ -56,9 +54,6 @@ func main() {
 }
 
 func initHandler(cfg *config.Config) *gin.Engine {
-	if !cfg.IsDevelopment() {
-		gin.SetMode(gin.ReleaseMode)
-	}
 
 	securityCfg := secure.DefaultConfig()
 	securityCfg.CustomFrameOptionsValue = "SAMEORIGIN"

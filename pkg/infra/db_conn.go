@@ -15,9 +15,6 @@ func NewMySqlConnector(cfg *config.Config) *MySqlConnector {
 	conn := cfg.MySQL.DBConn
 
 	log := logger.Default
-	if cfg.IsDevelopment() {
-		log = logger.Default.LogMode(logger.Info)
-	}
 	db, err := gorm.Open(mysql.Open(conn), &gorm.Config{
 		Logger: log,
 	})
