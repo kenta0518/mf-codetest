@@ -1,0 +1,81 @@
+definitions:
+  controller.Transaction:
+    properties:
+      amount:
+        type: integer
+      description:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  model.AppError:
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+    type: object
+  model.Transaction:
+    properties:
+      amount:
+        type: integer
+      description:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  model.User:
+    properties:
+      name:
+        type: string
+      user_id:
+        type: integer
+    type: object
+info:
+  contact: {}
+  description: MFテストのテストAPI
+  title: MFテスト API
+  version: "1.0"
+paths:
+  /api/users:
+    post:
+      consumes:
+      - application/json
+      description: ユーザーを作成します
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.AppError'
+      summary: ユーザー作成
+  /transactions:
+    post:
+      consumes:
+      - application/json
+      description: 取引登録処理が仕様を満たしているかテストする。
+      parameters:
+      - description: 取引情報
+        in: body
+        name: transaction
+        required: true
+        schema:
+          $ref: '#/definitions/controller.Transaction'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Transaction'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.AppError'
+      summary: 取引登録
+swagger: "2.0"
