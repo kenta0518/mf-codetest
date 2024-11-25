@@ -4,24 +4,21 @@ WORKDIR /app
 
 ENV TZ=Asia/Tokyo
 
-# sudoをインストール（必要であれば）
+# 必要なパッケージをインストール
 USER root
-RUN apt-get update && apt-get install -y sudo
-
-# MySQLのGPG公開鍵を追加
-RUN wget https://dev.mysql.com/doc/refman/8.0/en/checking-gpg-signature.html | tee /etc/apt/trusted.gpg.d/mysql.asc
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B7B3B788A8D3785C
-
-# MariaDBのリポジトリを追加
-RUN wget https://dev.mysql.com/get/mysql-apt-config_0.8.17-1_all.deb \
-    && dpkg -i mysql-apt-config_0.8.17-1_all.deb \
-    && apt-get update
-
-# MariaDBのインストール
-RUN apt-get install -y mariadb-server mariadb-client \
+RUN apt-get update && apt-get install -y \
+    sudo \
+    mariadb-server mariadb-client \
     && rm -rf /var/lib/apt/lists/*
 
-# Goモジュールの依存関係のインストール
+# MySQLデータディレクトリを初期化
+RUN mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+
+# MariaDB初期設定用スクリプトを作成
+COPY init-mariadb.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/init-mariadb.sh
+
+# Goモジュールの依存関係をインストール
 COPY ../go.mod ../go.sum ./
 RUN go mod download
 
@@ -37,14 +34,11 @@ RUN go install golang.org/x/tools/gopls@latest
 RUN go install github.com/golang/mock/mockgen@v1.7.0-rc.1
 RUN go install github.com/swaggo/swag/cmd/swag@latest
 
-# アプリケーションのコピー
+# アプリケーションコードをコピー
 COPY ../ ./
 
-# MariaDBの初期化
-RUN mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+# ENTRYPOINTスクリプトを作成
+COPY entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# アプリケーションのファイルのオーナーを変更
-RUN chown -R vscode:vscode /go
-
-# MariaDBサーバーをバックグラウンドで起動し、アプリケーションを実行
-CMD mysqld_safe & ./build/main
+ENTRYPOINT ["entrypoint.sh"]
