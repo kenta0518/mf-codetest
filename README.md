@@ -1,5 +1,16 @@
 # codetest
 
+## 手順
+
+1. 右下の「Reopen in Container」をクリックする。もしポップアップが表示されなければ、左下緑色ボタンから「Reopen in Container」を選択できる。
+   <img width="933" alt="reopen_in_container" src="readme_images/image-1.png">
+
+2. `実行(R)`>`デバッグの開始`をクリックする。以下のようにデバッグコンソールが表示されれば OK です。
+   <img width="933" alt="action_1" src="readme_images/image-2.png">
+
+3. [http://localhost:8888](http://localhost:8888)にアクセスし、以下のレスポンスが確認できれば OK です。
+
+
 ## 課題
 
 テストがパスするようにDockerイメージを作成してください。
